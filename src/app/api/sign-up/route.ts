@@ -6,7 +6,7 @@ import { success } from "zod";
 
 //If user exists and is verified -> success: false, do nothing
 //If user does not exits -> hash the password, save the new registered User
-//If user exists but is not verified -> 
+//If user exists but is not verified -> hash the password, verify
 
 export async function POST(request: Request) {
     await dbConnect();
