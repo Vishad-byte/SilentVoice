@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
           if (isPasswordCorrect) {
-            return user;
+            return user;          //data of this will be added into JWT/Session flow
           } else {
             throw new Error('Incorrect password');
           }
@@ -44,8 +44,8 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user }) {     
+      if (user) {               //this is done to inject data in our token such that our database calls can be reduced and we can access our required data from token and the data inside it
         token._id = user._id?.toString(); // Convert ObjectId to string
         token.isVerified = user.isVerified;
         token.isAcceptingMessages = user.isAcceptingMessages;

@@ -42,7 +42,7 @@ export async function POST(request: Request) {
                 await existingUserByEmail.save();
             }
         } else {
-            const hashedPassword = bcrypt.hash(password, 10)
+            const hashedPassword = await bcrypt.hash(password, 10)
             const expiryDate = new Date();
             expiryDate.setHours(expiryDate.getHours() + 1);   //Expire in 1 hour from the current time we got using Date();
 
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
             return Response.json({
                 success: true,
                 message: "User registered successfully. Verify your Email"
-            },{status: 500})
+            },{status: 200})
 
 
     } catch (error) {
