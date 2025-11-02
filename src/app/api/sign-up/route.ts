@@ -9,6 +9,7 @@ import { success } from "zod";
 //If user exists but is not verified -> hash the password, verify
 
 export async function POST(request: Request) {
+
     await dbConnect();
 
     try {
