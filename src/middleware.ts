@@ -6,10 +6,10 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const url = request.nextUrl;
 
-  // If the user is logged in and tries to visit auth pages (sign-in, sign-up), redirect to dashboard
+  // If the user is logged in and tries to visit auth pages (sign-in, sign-up, verify), redirect to dashboard
   if (
     token &&
-    (url.pathname.startsWith('/sign-in') || url.pathname.startsWith('/sign-up') || url.pathname === '/')
+    (url.pathname.startsWith('/sign-in') || url.pathname.startsWith('/sign-up') || url.pathname.startsWith('/verify') || url.pathname === '/')
   ) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   // If user is not logged in and tries to visit protected routes, redirect to sign-in
   if (
     !token &&
-    (url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/verify'))
+    url.pathname.startsWith('/dashboard')
   ) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
