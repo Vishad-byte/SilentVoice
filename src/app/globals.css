@@ -120,3 +120,16 @@
     @apply bg-background text-foreground;
   }
 }
+/* ==== Fix low contrast Sonner toast description ==== */
+[data-sonner-toast] [data-description] {
+  color: hsl(var(--foreground)) !important; /* match theme text */
+  opacity: 0.95 !important; /* make it visible but not too harsh */
+  font-size: 0.875rem !important; /* 14px */
+  line-height: 1.3 !important;
+}
+
+/* optional: improve title readability too */
+[data-sonner-toast] [data-title] {
+  color: hsl(var(--foreground)) !important;
+  font-weight: 600 !important;
+}
