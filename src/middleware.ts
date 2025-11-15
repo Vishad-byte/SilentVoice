@@ -7,12 +7,12 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
 
   // If the user is logged in and tries to visit auth pages (sign-in, sign-up, verify), redirect to dashboard
-  if (
-    token &&
-    (url.pathname.startsWith('/sign-in') || url.pathname.startsWith('/sign-up') || url.pathname.startsWith('/verify') || url.pathname === '/')
-  ) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
-  }
+  // if (
+  //   token &&
+  //   (url.pathname.startsWith('/sign-in') || url.pathname.startsWith('/sign-up') || url.pathname.startsWith('/verify') || url.pathname === '/')
+  // ) {
+  //   return NextResponse.redirect(new URL('/dashboard', request.url));
+  // }
 
   // If user is not logged in and tries to visit protected routes, redirect to sign-in
   if (
