@@ -1,6 +1,5 @@
 # Silent Voice
 
-> **Live Demo:** [https://silentvoice.onrender.com](#) <!-- Paste your live link above -->
 
 An anonymous messaging platform where users can receive messages from others without revealing their identity. Similar to platforms like Qooh.me, users can create a profile, share their unique link, and receive anonymous messages.
 
@@ -283,23 +282,6 @@ silentvoice/
 ├── public/                   # Static assets
 └── package.json
 ```
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy!
-
-### Other Platforms
-
-The app can be deployed to any platform supporting Next.js:
-- Netlify
-- Railway
-- AWS Amplify
-- DigitalOcean App Platform
 
 ## 🐛 Troubleshooting
 
