@@ -40,7 +40,7 @@ export async function POST (request:Request) {
             message: "Message status updated successfully",
         }, { status: 200 })
 
-    } catch (error) {
+    } catch {
         console.log("Failed to update user status to accept messages");
         return Response.json({
             success: false,
@@ -80,7 +80,7 @@ export async function GET (request:Request) {
             success: true,
             isAcceptingMessage: foundUser.isAcceptingMessage
         }, { status: 200 })
-    } catch (error) {
+    } catch {
         console.log("Error in getting user message acceptance status");
         return Response.json({
             success: false,

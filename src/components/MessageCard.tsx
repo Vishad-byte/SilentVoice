@@ -1,10 +1,7 @@
 'use client'
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -22,7 +19,7 @@ import {
 import { Button } from "./ui/button"
 import { X } from "lucide-react"
 import { Message } from "@/model/User"
-import axios, {AxiosError} from 'axios'
+import axios from 'axios'
 import { ApiResponse } from "@/types/ApiResponse"
 import { toast } from "sonner"
 import dayjs from 'dayjs';

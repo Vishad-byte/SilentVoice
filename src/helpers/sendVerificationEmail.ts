@@ -23,7 +23,7 @@ export async function sendVerificationEmail(
     } catch (emailError) {
         // Log full error for debugging; include message in API response meta so callers can see the cause
         console.error('Error sending verification email', emailError);
-        const errorMessage = (emailError && (emailError as any).message) || String(emailError);
+        const errorMessage = emailError instanceof Error ? emailError.message : String(emailError);
         return {success: false, message: 'Failed to send verification email', meta: { error: errorMessage }};
     }
 }

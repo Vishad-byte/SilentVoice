@@ -6,6 +6,6 @@ export interface ApiResponse{
     isAcceptingMessage?: boolean;
     messages?: Array<Message>
     // Optional debug/meta information (used during dev to surface external service responses)
-    meta?: any   //TODO: remove this meta before deployment
+    meta?: Record<string, unknown>   //TODO: remove this meta before deployment
 
 }

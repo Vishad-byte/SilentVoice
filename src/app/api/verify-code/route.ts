@@ -70,13 +70,14 @@ export async function POST(request: Request) {
       { success: false, message: 'Incorrect verification code' },
       { status: 400 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('🔥 ERROR verifying user:', error);
+    const err = error instanceof Error ? error : new Error(String(error));
     return NextResponse.json(
       {
         success: false,
-        message: error.message || 'Error verifying user',
-        stack: error.stack,
+        message: err.message || 'Error verifying user',
+        stack: err.stack,
       },
       { status: 500 }
     );

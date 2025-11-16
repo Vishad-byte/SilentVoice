@@ -23,12 +23,13 @@ export async function POST() {
 
     // useCompletion with streamProtocol='data' expects UI message stream response
     return result.toUIMessageStreamResponse();
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Gemini Error:", err);
     console.error("Error details:", JSON.stringify(err, null, 2));
     
     // Check for quota/quota errors
-    const errorMessage = err?.message ?? "Unexpected error";
+    const error = err instanceof Error ? err : new Error(String(err));
+    const errorMessage = error.message ?? "Unexpected error";
     const isQuotaError = errorMessage.includes("quota") || 
                         errorMessage.includes("Quota exceeded") ||
                         errorMessage.includes("rate limit");
@@ -39,7 +40,7 @@ export async function POST() {
         error: isQuotaError 
           ? "Free tier quota exceeded. Please check your Google AI Studio billing settings or wait before retrying."
           : errorMessage,
-        details: err?.cause?.message ?? err?.stack,
+        details: error.cause instanceof Error ? error.cause.message : error.stack,
         isQuotaError
       }),
       {

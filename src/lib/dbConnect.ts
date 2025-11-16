@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { log } from "node:console";
 
 type ConnectionObject = {
     isConnected?: number
