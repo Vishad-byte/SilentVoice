@@ -3,24 +3,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link"
-import { useEffect, useState } from "react"
-import { useDebounceValue } from 'usehooks-ts'
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { signUpSchema } from "@/schemas/signupSchema";
-import axios, {AxiosError} from 'axios'
-import { ApiResponse } from "@/types/ApiResponse"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Loader2, CheckCircle2, XCircle } from "lucide-react"
 import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from "next-auth/react"
 
-const page = () => {
-
-
-
+const Page = () => {
     const router = useRouter();
 
     //zod implementation
@@ -127,4 +118,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

@@ -10,12 +10,12 @@ import { useRouter } from "next/navigation"
 import { signUpSchema } from "@/schemas/signupSchema";
 import axios, {AxiosError} from 'axios'
 import { ApiResponse } from "@/types/ApiResponse"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Loader2, CheckCircle2, XCircle } from "lucide-react"
 
-const page = () => {
+const Page = () => {
 
     const [username, setUsername] = useState('');
     const [usernameMessage, setUsernameMessage] = useState('');
@@ -201,4 +201,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
