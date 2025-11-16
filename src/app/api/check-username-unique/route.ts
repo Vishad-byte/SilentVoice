@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
-import {success, z} from "zod";
+import { z } from "zod";
 import { usernameValidation } from "@/schemas/signupSchema";
 
 const UsernameQuerySchema = z.object({
@@ -19,7 +19,10 @@ export async function GET(request: Request){
         const result = UsernameQuerySchema.safeParse(queryParam);
         console.log(result);  //TODO: remove
         if(!result.success) {
-            const usernameErrors = result.error.format().username?._errors || []  //give errors for username
+            // Use issues array (Zod v4 recommended approach)
+            const usernameErrors = result.error.issues
+                .filter(issue => issue.path[0] === 'username')
+                .map(issue => issue.message);
             return Response.json({
                 success: false,
                 message: usernameErrors?.length>0? usernameErrors.join(','): 'Invalid query parameters',

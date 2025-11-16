@@ -48,6 +48,15 @@ export default function SendMessage() {
   } = useCompletion({
     api: '/api/suggest-messages',
     initialCompletion: initialMessageString,
+    onError: (error) => {
+      console.error('useCompletion error:', error);
+      toast.error('Failed to get suggestions', {
+        description: error.message
+      });
+    },
+    onFinish: (prompt, completion) => {
+      console.log('Completion finished:', completion);
+    },
   });
 
   const form = useForm<z.infer<typeof messageSchema>>({
@@ -85,10 +94,14 @@ export default function SendMessage() {
 
   const fetchSuggestedMessages = async () => {
     try {
-      complete('');
+      console.log('Fetching suggested messages...');
+      await complete('');
+      console.log('Completion finished. Current completion:', completion);
     } catch (error) {
       console.error('Error fetching messages:', error);
-      // Handle error appropriately
+      toast.error('Failed to fetch suggestions', {
+        description: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   };
 
