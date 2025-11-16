@@ -62,7 +62,7 @@ const Page = () => {
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
-      toast.error("Error", {
+      toast.info("Alert", {
         description: axiosError.response?.data.message || "Failed to show messages after refresh"
       })
     } finally {

@@ -1,37 +1,30 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import type { NextRequest } from 'next/server';
+export { default } from 'next-auth/middleware';
+
+export const config = {
+  matcher: ['/dashboard/:path*', '/sign-in', '/sign-up', '/', '/verify/:path*'],
+};
 
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const url = request.nextUrl;
 
-  // If the user is logged in and tries to visit auth pages (sign-in, sign-up, verify), redirect to dashboard
+  // Redirect to dashboard if the user is already authenticated
+  // and trying to access sign-in, sign-up, or home page
   if (
     token &&
-    (url.pathname.startsWith('/sign-in') || url.pathname.startsWith('/sign-up') || url.pathname.startsWith('/verify') || url.pathname === '/')
+    (url.pathname.startsWith('/sign-in') ||
+      url.pathname.startsWith('/sign-up') ||
+      url.pathname.startsWith('/verify') ||
+      url.pathname === '/')
   ) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // If user is not logged in and tries to visit protected routes, redirect to sign-in
-  if (
-    !token &&
-    url.pathname.startsWith('/dashboard')
-  ) {
+  if (!token && url.pathname.startsWith('/dashboard')) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
-  // Otherwise, allow request
   return NextResponse.next();
 }
-
-export const config = {
-  matcher: [
-    '/sign-in',
-    '/sign-up',
-    '/',
-    '/dashboard/:path*',
-    '/verify/:path*',
-  ],
-};
