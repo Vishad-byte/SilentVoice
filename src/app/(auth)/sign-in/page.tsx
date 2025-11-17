@@ -10,11 +10,11 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from "next-auth/react"
+import { useState } from "react"
 
 const Page = () => {
     const router = useRouter();
-
-    //zod implementation
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm({
         resolver: zodResolver(signInSchema),
@@ -25,33 +25,45 @@ const Page = () => {
     })
 
     const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-  try {
-    const result = await signIn('credentials', {
-      redirect: false,
-      identifier: data.identifier,
-      password: data.password,
-    });
+        setIsSubmitting(true);
+        try {
+            const result = await signIn('credentials', {
+                redirect: false,
+                identifier: data.identifier,
+                password: data.password,
+            });
 
-    // signIn returns { error?, status, ok, url? } when redirect: false
-    if (result?.error) {
-      toast.error("Login failed", { description: result.error });
-      return;
-    }
+            if (result?.error) {
+                toast.error("Login failed", { 
+                    description: result.error 
+                });
+                setIsSubmitting(false);
+                return;
+            }
 
-    if (result?.ok) {
-      // Success: session cookie is set server-side. Navigate client-side immediately.
-      router.replace("/dashboard");
-      return;
-    }
+            if (result?.ok) {
+                toast.success("Login successful!", {
+                    description: "Redirecting to dashboard..."
+                });
+                
+                // Use window.location for a full page reload to ensure session is picked up
+                window.location.href = "/dashboard";
+                return;
+            }
 
-    // Fallback: reload page to pick up session/cookie if something unexpected happened
-    router.refresh();
-  } catch (err) {
-    console.error("Sign-in error:", err);
-    toast.error("Unexpected error. Try again.");
-  }
-};
-
+            // Fallback
+            toast.error("Something went wrong", {
+                description: "Please try again"
+            });
+            setIsSubmitting(false);
+        } catch (err) {
+            console.error("Sign-in error:", err);
+            toast.error("Unexpected error", {
+                description: "Please try again"
+            });
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
@@ -77,6 +89,7 @@ const Page = () => {
                                             <Input 
                                                 placeholder="email/username" 
                                                 className="h-12 bg-white border-gray-300 text-black placeholder:text-gray-400 focus:border-black focus:ring-1 focus:ring-black transition-all rounded-md"
+                                                disabled={isSubmitting}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -96,6 +109,7 @@ const Page = () => {
                                                 type="password" 
                                                 placeholder="password" 
                                                 className="h-12 bg-white border-gray-300 text-black placeholder:text-gray-400 focus:border-black focus:ring-1 focus:ring-black transition-all rounded-md"
+                                                disabled={isSubmitting}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -107,8 +121,9 @@ const Page = () => {
                             <Button 
                                 type="submit" 
                                 className="w-full h-12 bg-black hover:bg-gray-800 text-white font-medium rounded-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                                disabled={isSubmitting}
                             >
-                              Sign In
+                                {isSubmitting ? "Signing in..." : "Sign In"}
                             </Button>
                         </form>
                     </Form>
