@@ -25,21 +25,33 @@ const Page = () => {
     })
 
     const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-        const result = await signIn('credentials', {
-          redirect: false, 
-          identifier: data.identifier,
-          password: data.password
-        })
-        if(result?.error){
-          toast.error("Login Failed", {
-            description: result.error
-          })
-        } 
+  try {
+    const result = await signIn('credentials', {
+      redirect: false,
+      identifier: data.identifier,
+      password: data.password,
+    });
 
-        if(result?.url) {
-          router.replace('/dashboard')
-        }
+    // signIn returns { error?, status, ok, url? } when redirect: false
+    if (result?.error) {
+      toast.error("Login failed", { description: result.error });
+      return;
     }
+
+    if (result?.ok) {
+      // Success: session cookie is set server-side. Navigate client-side immediately.
+      router.replace("/dashboard");
+      return;
+    }
+
+    // Fallback: reload page to pick up session/cookie if something unexpected happened
+    router.refresh();
+  } catch (err) {
+    console.error("Sign-in error:", err);
+    toast.error("Unexpected error. Try again.");
+  }
+};
+
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
